@@ -1,0 +1,25 @@
+import chatGpt from "../assets/chatgpt.png";
+import google from "../assets/google.png";
+import deepseek from "../assets/deepseek.png";
+import perplexity from "../assets/perplexity.png";
+import claude from "../assets/claude.png";
+import grok from "../assets/grok.png";
+import grokW from "../assets/grokW.png";
+import logo from "../assets/logo.png";
+export const models = {
+  chatGpt,
+  claude,
+  google,
+  perplexity,
+  deepseek,
+  grok,
+  grokW,
+};
+export default logo;
+
+export const modalToIcon = {
+  "GPT-4": chatGpt,
+  gpt4: chatGpt,
+  Deepseek: deepseek,
+  Grok: grok,
+};

@@ -1,0 +1,144 @@
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ===== THEME VARIABLES ===== */
+:root {
+  /* Light Mode */
+  --background: #f9f5f0;
+  --background-secondary: #ebebeb;
+  --surface: #ebebeb;
+  --text-primary: #252829;
+  --text-secondary: #5c676d;
+  --accent-primary: #4fc6d4;
+  --accent-secondary: #cba8b7;
+  --radius: 0.625rem;
+  --sidebar-background: #fefbf6;
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+[data-theme="dark"] {
+  /* Dark Mode */
+  --background: #1a1a1a;
+  --background-secondary: #262525;
+
+  --surface: #252829;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --accent-primary: #4fc6d4;
+  --accent-secondary: #cba8b7;
+  --sidebar-background: #171717;
+}
+
+body {
+  background: var(--background);
+} /* Auto-hide scrollbar like ChatGPT */
+textarea {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--text-primary) var(--surface);
+}
+
+/* Webkit browsers */
+textarea::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 6px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: var(--text-primary);
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-primary);
+}
+
+/* Hide scrollbar by default and show on hover */
+textarea::-webkit-scrollbar {
+  background: transparent; /* hides scrollbar track initially */
+}
+
+textarea:hover::-webkit-scrollbar {
+  background: transparent; /* track stays transparent */
+}
+
+textarea:hover::-webkit-scrollbar-thumb {
+  background-color: var(--text-primary);
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+/* Force Shiki code blocks to wrap */
+pre.shiki {
+  white-space: pre-wrap !important;
+  word-break: break-word;
+}
