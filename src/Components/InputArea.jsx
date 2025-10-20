@@ -253,88 +253,88 @@ export default function InputArea({ chatId, ...props }) {
 
           {/* Input Row */}
 
-          <div className="flex flex-col gap-2 w-full">
-            <div className="flex items-center justify-center gap-2 w-full">
-              <div className="relative flex items-center">
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: isAuthenticated ? 1.1 : 1 }}
-                  onClick={() =>
-                    isAuthenticated && fileInputRef.current.click()
-                  }
-                  onMouseEnter={() => !isAuthenticated && setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
-                  className={`flex cursor-pointer items-center justify-center text-[var(--text-primary)] ${
-                    isAuthenticated
-                      ? "hover:text-cyan-500"
-                      : "opacity-50 cursor-not-allowed"
-                  }`}
-                >
-                  <FiPlus size={22} />
-                </motion.button>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  className="hidden"
-                  multiple
-                />
-              </div>
-
-              {/* Textarea */}
-              <textarea
-                ref={textareaRef}
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask me anything..."
-                className="flex-1 min-w-0 resize-none max-h-40  overflow-y-auto px-3 py-2 rounded-md border-none outline-none bg-[var(--surface)] text-[var(--text-primary)] placeholder-gray-400"
-                rows={1}
-              />
-
-              {/* Mic */}
+          <div className="flex flex-wrap  items-center justify-center gap-2 w-full">
+            {/* ➕ File Upload */}
+            <div className="relative flex items-center">
               <motion.button
                 type="button"
-                whileHover={{ scale: 1.1 }}
-                onClick={handleMicClick}
-                className={`p-2 rounded-full flex items-center justify-center cursor-pointer ${
-                  recording
-                    ? "bg-[var(--destructive)] text-white"
-                    : "text-[var(--text-primary)] hover:text-cyan-500"
+                whileHover={{ scale: isAuthenticated ? 1.1 : 1 }}
+                onClick={() => isAuthenticated && fileInputRef.current.click()}
+                onMouseEnter={() => !isAuthenticated && setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+                className={`flex cursor-pointer items-center justify-center text-[var(--text-primary)] ${
+                  isAuthenticated
+                    ? "hover:text-cyan-500"
+                    : "opacity-50 cursor-not-allowed"
                 }`}
               >
-                <FiMic className="w-5 h-5" />
+                <FiPlus size={22} />
               </motion.button>
-
-              {/* Send */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                type="submit"
-                disabled={
-                  (!inputText.trim() &&
-                    !imagePreviews.length &&
-                    !filePreviews.length) ||
-                  mediaLoading ||
-                  loading
-                }
-                className={`p-2 rounded-full ${
-                  inputText.trim() ||
-                  imagePreviews.length ||
-                  filePreviews.length
-                    ? "bg-cyan-500 text-white hover:bg-cyan-600"
-                    : "bg-[var(--background-secondary)] text-gray-400 cursor-not-allowed"
-                }`}
-              >
-                {inputText.trim() ? (
-                  <FiSend className="w-5 h-5" />
-                ) : (
-                  <AudioLines animateOnHover />
-                )}
-              </motion.button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                multiple
+              />
             </div>
-            {props.gen && <GenOption setData={setData} data={data} />}
+
+            {/* 📝 Textarea */}
+            <textarea
+              ref={textareaRef}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask me anything..."
+              className="flex-1 min-w-0 resize-none max-h-40 overflow-y-auto
+      px-3 py-2 rounded-md border-none outline-none
+      bg-[var(--surface)] text-[var(--text-primary)] placeholder-gray-400
+      w-full sm:w-auto"
+              rows={1}
+            />
+
+            {/* 🎤 Mic */}
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.1 }}
+              onClick={handleMicClick}
+              className={`p-2 rounded-full flex items-center justify-center cursor-pointer ${
+                recording
+                  ? "bg-[var(--destructive)] text-white"
+                  : "text-[var(--text-primary)] hover:text-cyan-500"
+              }`}
+            >
+              <FiMic className="w-5 h-5" />
+            </motion.button>
+
+            {/* 📤 Send */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              disabled={
+                (!inputText.trim() &&
+                  !imagePreviews.length &&
+                  !filePreviews.length) ||
+                mediaLoading ||
+                loading
+              }
+              className={`p-2 rounded-full transition-colors
+      ${
+        inputText.trim() || imagePreviews.length || filePreviews.length
+          ? "bg-cyan-500 text-white hover:bg-cyan-600"
+          : "bg-[var(--background-secondary)] text-gray-400 cursor-not-allowed"
+      }
+    `}
+            >
+              {inputText.trim() ? (
+                <FiSend className="w-5 h-5" />
+              ) : (
+                <AudioLines animateOnHover />
+              )}
+            </motion.button>
           </div>
+          {props.gen && <GenOption setData={setData} data={data} />}
         </motion.div>
       </form>
     </>

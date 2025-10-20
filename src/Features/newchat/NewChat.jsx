@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { messagesAction } from "../../store/slices/messageSlice.js";
 import { useEffect } from "react";
 import { BASE_PATH } from "../../store/constants.js";
+import Partical from "@/Components/Particles.jsx";
 
 const NewChat = () => {
   const mode = useSelector((state) => state.theme.mode);
@@ -25,6 +26,28 @@ const NewChat = () => {
       animate={{ y: 0, opacity: 1 }}
       className="w-full z-10 px-4 flex flex-col items-center justify-center min-h-screen pb-40 bg-[var(--background)]"
     >
+      {/* Background Particles */}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "fixed",
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+        className={` ${mode === "dark" ? "" : "opacity-0"}`}
+      >
+        <Partical
+          particleColors={["#ffffff", "#ffffff"]}
+          particleCount={100}
+          particleSpread={10}
+          speed={0.1}
+          particleBaseSize={100}
+          moveParticlesOnHover={true}
+          alphaParticles={true}
+          disableRotation={false}
+        />
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -32,7 +55,6 @@ const NewChat = () => {
       >
         <div className="bg-[var(--background)]">
           <CircularGallery
-            mode={mode}
             bend={3}
             textColor="#ffffff"
             borderRadius={0.05}

@@ -8,11 +8,10 @@ const Message = () => {
   const { messages, loading } = useSelector((state) => state.messages);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages, loading]);
   return (
-    <div className="flex-1 w-full overflow-y-auto  p-4 custom-scrollbar ">
-      {/* Center messages inside */}
+    <div className="flex-1 w-full overflow-y-auto  p-3 custom-scrollbar ">
       <div className="max-w-3xl mx-auto flex flex-col">
         <AnimatePresence>
           {messages.map((msg) => (

@@ -208,7 +208,6 @@ class App {
   constructor(
     container,
     {
-      mode,
       items,
       bend,
       borderRadius = 0,
@@ -229,7 +228,7 @@ class App {
     this.createScene();
     this.onResize();
     this.createGeometry();
-    this.createMedias(mode, items, bend, borderRadius);
+    this.createMedias(items, bend, borderRadius);
     this.update();
     this.addEventListeners();
   }
@@ -264,13 +263,12 @@ class App {
     });
   }
 
-  createMedias(mode, items, bend = 1, borderRadius) {
+  createMedias(items, bend = 1, borderRadius) {
     const defaultItems = [
       { image: models.chatGpt },
       { image: models.deepseek },
       { image: models.claude },
       { image: models.google },
-      { image: models.perplexity },
       { image: models.grok },
     ];
     const galleryItems = items && items.length ? items : defaultItems;
@@ -415,7 +413,6 @@ class App {
 }
 
 export default function CircularGallery({
-  mode,
   items,
   bend = 3,
   borderRadius = 0,
@@ -426,7 +423,6 @@ export default function CircularGallery({
   const containerRef = useRef(null);
   useEffect(() => {
     const app = new App(containerRef.current, {
-      mode,
       items,
       bend,
       borderRadius,

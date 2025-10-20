@@ -14,10 +14,6 @@ const Chat = () => {
   const { mode } = useSelector((state) => state.theme.mode);
   const dispatch = useDispatch();
   const { chats } = useSelector((state) => state.chats);
-  const { messages, loading, message, error } = useSelector(
-    (state) => state.messages
-  );
-
   useEffect(() => {
     if (chats.length > 0) {
       const chat = chats.filter((chat) => chat.chat_id == chatId);
@@ -28,15 +24,6 @@ const Chat = () => {
       }
     }
   }, [chats, chatId]);
-  // useEffect(() => {
-  //   if (message) {
-  //     dispatch(messagesAction.resetMessage());
-  //   }
-  //   if (error) {
-  //     toast.error(error);
-  //     dispatch(messagesAction.resetError());
-  //   }
-  // }, [message, error]);
   useEffect(() => {
     dispatch(chatActions.setActiveChat(chatId));
   }, [chats, chatId]);
