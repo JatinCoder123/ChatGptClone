@@ -76,7 +76,7 @@ const GenOption = ({ data, setData }) => {
       ref={menuRef}
       className="relative w-full flex justify-center mt-3 select-none"
     >
-      <div className="flex items-center gap-2 bg-transparent relative text-[var(--text-primary)]">
+      <div className="flex flex-wrap items-center gap-2 bg-transparent relative text-[var(--text-primary)]">
         {/* TYPE */}
         <div className="relative">
           <button

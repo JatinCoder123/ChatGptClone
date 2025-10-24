@@ -15,6 +15,7 @@ export default logo;
 
 export const modalToIcon = {
   "GPT-4": chatGpt,
+  gpt4: chatGpt,
   Deepseek: deepseek,
   Grok: grok,
 };

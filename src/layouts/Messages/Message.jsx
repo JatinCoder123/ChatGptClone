@@ -9,7 +9,7 @@ const Message = () => {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
-  }, [messages, loading]);
+  }, [messages]);
   return (
     <div className="flex-1 w-full overflow-y-auto  p-3 custom-scrollbar ">
       <div className="max-w-3xl mx-auto flex flex-col">
@@ -18,12 +18,11 @@ const Message = () => {
             <MessageBubble key={msg.id} message={msg} />
           ))}
         </AnimatePresence>
-
         {loading && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex justify-start mb-4"
+            className="flex justify-start mb-4 sticky bottom-0 bg-transparent"
           >
             <div className="rounded-2xl">
               <motion.img

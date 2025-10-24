@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "@/layouts/Header/Header.jsx";
 import MediaSidebar from "@/layouts/sidebar/MediaSidebar/MediaSidebar.jsx";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";

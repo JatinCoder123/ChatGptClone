@@ -5,6 +5,7 @@ import { BACKEND_URL } from "../constants";
 const mediaSlice = createSlice({
   name: "media",
   initialState: {
+    mediaLoading: false,
     loading: false,
     media: [],
     error: null,
@@ -23,77 +24,77 @@ const mediaSlice = createSlice({
   },
   reducers: {
     getMediaRequest(state) {
-      state.loading = true;
+      state.mediaLoading = true;
       state.media = [];
       state.error = null;
     },
     getMediaSuccess(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.media = action.payload;
       state.error = null;
     },
     getMediaFailed(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.media = state.media;
       state.error = action.payload;
     },
     getUserMediaRequest(state) {
-      state.loading = true;
+      state.mediaLoading = true;
       state.userMedia = [];
       state.error = null;
     },
     getUserMediaSuccess(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.userMedia = action.payload;
       state.error = null;
     },
     getUserMediaFailed(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.userMedia = state.userMedia;
       state.error = action.payload;
     },
     getUserFavMediaRequest(state) {
-      state.loading = true;
+      state.mediaLoading = true;
       state.userFavMedia = [];
       state.error = null;
     },
     getUserFavMediaSuccess(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.userFavMedia = action.payload;
       state.error = null;
     },
     getUserFavMediaFailed(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.userFavMedia = state.userFavMedia;
       state.error = action.payload;
     },
     deleteMediaRequest(state) {
-      state.loading = true;
+      state.mediaLoading = true;
       state.message = null;
       state.error = null;
     },
     deleteMediaSuccess(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.message = action.payload;
       state.error = null;
     },
     deleteMediaFailed(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.message = null;
       state.error = action.payload;
     },
     changeMediaFavStatusRequest(state) {
-      state.loading = true;
+      state.mediaLoading = true;
       state.message = null;
       state.error = null;
     },
     changeMediaFavStatusSuccess(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.message = action.payload;
       state.error = null;
     },
     changeMediaFavStatusFailed(state, action) {
-      state.loading = false;
+      state.mediaLoading = false;
       state.message = null;
       state.error = action.payload;
     },
@@ -324,7 +325,6 @@ export const changeFavStatus = (mediaId, isFav, userMedia, userId) => {
 export const createMedia = (formData, userId) => {
   return async (dispatch) => {
     dispatch(mediaSlice.actions.createMediaRequest());
-
     try {
       const { data } = await axios.post(
         `${BACKEND_URL}?controller=media&action=generate&user_id=${userId}`,
@@ -332,12 +332,12 @@ export const createMedia = (formData, userId) => {
         {
           withCredentials: true,
           headers: {
-            "Content-Type": "multipart/form-data", // ✅ correct for FormData
+            "Content-Type": "multipart/form-data",
           },
         }
       );
       console.log("Created Media", data);
-      dispatch(mediaSlice.actions.createMediaSuccess(data.media_url));
+      dispatch(mediaSlice.actions.createMediaSuccess(data.media_urls));
       dispatch(mediaSlice.actions.clearAllErrors());
     } catch (error) {
       console.log(error);

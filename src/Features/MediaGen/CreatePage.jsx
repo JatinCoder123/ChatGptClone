@@ -7,6 +7,7 @@ import LoadingShimmer from "../../Components/LoadingShimmer";
 import { motion } from "framer-motion";
 import VideoGen from "../../Components/VideoGen";
 import { toast } from "react-toastify";
+import Stack from "@/Components/Stack";
 
 const CreatePage = () => {
   const dispatch = useDispatch();
@@ -27,20 +28,28 @@ const CreatePage = () => {
       {loading && type == "image" && <LoadingShimmer />}
       {loading && type == "video" && <VideoGen />}
 
-      {newCreatedMedia != null && type == "image" && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="w-full  flex items-center justify-center"
-        >
-          <img
-            src={newCreatedMedia}
-            alt="Generated"
-            className="max-h-[400px] max-w-[400px]  rounded-xl shadow-xl object-contain"
-          />
-        </motion.div>
-      )}
+      {newCreatedMedia != null &&
+        type === "image" &&
+        Array.isArray(newCreatedMedia) && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="w-full flex items-center justify-center p-5"
+          >
+            <Stack
+              randomRotation={true}
+              sensitivity={180}
+              sendToBackOnClick={false}
+              cardDimensions={{ width: 300, height: 300 }}
+              cardsData={newCreatedMedia.map((url, index) => ({
+                id: index + 1,
+                img: url, // each url from newCreatedMedia array
+              }))}
+            />
+          </motion.div>
+        )}
+
       {newCreatedMedia != null && type == "video" && (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

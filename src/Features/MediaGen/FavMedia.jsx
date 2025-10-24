@@ -6,7 +6,9 @@ import { getFavUserMedia, mediaAction } from "../../store/slices/mediaSlice";
 
 function FavMedia() {
   const { user } = useSelector((state) => state.user);
-  const { userFavMedia, loading, error } = useSelector((state) => state.media);
+  const { userFavMedia, mediaLoading, error } = useSelector(
+    (state) => state.media
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     if (Object.keys(user).length > 0 && userFavMedia.length == 0)
@@ -18,12 +20,12 @@ function FavMedia() {
       toast.error(error);
       dispatch(mediaAction.clearAllErrors());
     }
-  }, [loading, error, dispatch]);
+  }, [mediaLoading, error, dispatch]);
   return (
     <>
       <ExploreComponent
         mediaItems={userFavMedia}
-        loading={loading}
+        loading={mediaLoading}
         title={"My Favourite"}
       />
     </>

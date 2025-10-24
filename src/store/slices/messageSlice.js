@@ -14,29 +14,31 @@ const messageSlice = createSlice({
   reducers: {
     messageRequest(state) {
       state.loading = true;
-      state.messages = [];
     },
     messageResponse(state, action) {
       state.loading = false;
       state.messages = action.payload;
     },
     getMessagesRequest(state) {
-      (state.loading = true),
-        (state.messages = state.messages),
-        (state.message = null);
+      state.loading = true;
+      state.message = null;
     },
     getMessagesSuccess(state, action) {
-      (state.loading = false),
-        (state.messages = action.payload),
-        (state.message = true);
+      state.loading = false;
+      state.messages = action.payload;
+      state.message = true;
     },
     getMessagesFailed(state, action) {
-      (state.loading = false), (state.error = action.payload);
+      state.loading = false;
+      state.error = action.payload;
     },
     setMessage(state, action) {
       state.message = action.payload;
     },
     addMessage(state, action) {
+      state.messages = action.payload;
+    },
+    UpdateMessages(state, action) {
       state.messages = action.payload;
     },
     resetMessage(state) {

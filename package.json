@@ -26,7 +26,7 @@
     "gsap": "^3.13.0",
     "ldrs": "^1.1.7",
     "lucide-react": "^0.544.0",
-    "motion": "^12.23.22",
+    "motion": "^12.23.24",
     "ogl": "^1.0.11",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.1.1",

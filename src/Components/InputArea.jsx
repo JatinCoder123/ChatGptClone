@@ -174,7 +174,7 @@ export default function InputArea({ chatId, ...props }) {
   return (
     <>
       <form
-        onSubmit={genHandleSubmit}
+        onSubmit={props.gen ? genHandleSubmit : handleSubmit}
         className="w-full flex items-center justify-center"
       >
         <motion.div

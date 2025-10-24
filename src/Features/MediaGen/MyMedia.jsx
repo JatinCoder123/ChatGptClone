@@ -6,7 +6,9 @@ import { getUserMedia, mediaAction } from "../../store/slices/mediaSlice";
 
 function MyMedia() {
   const { user } = useSelector((state) => state.user);
-  const { userMedia, loading, error } = useSelector((state) => state.media);
+  const { userMedia, mediaLoading, error } = useSelector(
+    (state) => state.media
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     if (Object.keys(user).length > 0 && userMedia.length == 0)
@@ -17,12 +19,12 @@ function MyMedia() {
       toast.error(error);
       dispatch(mediaAction.clearAllErrors());
     }
-  }, [loading, error, dispatch, userMedia]);
+  }, [mediaLoading, error, dispatch, userMedia]);
   return (
     <>
       <ExploreComponent
         mediaItems={userMedia}
-        loading={loading}
+        loading={mediaLoading}
         title={"My media"}
       />
     </>
