@@ -9,7 +9,11 @@ export default function AppSidebar({ mobileOpen, setMobileOpen }) {
     <div className="flex h-screen bg-[#1a1a1a] z-[9999]">
       {/* Desktop Sidebar */}
       <span className="hidden md:block">
-        <SidebarContent panelFn={setCollapsed} collapsed={collapsed} />
+        <SidebarContent
+          panelFn={setCollapsed}
+          collapsed={collapsed}
+          mobileOpen={mobileOpen}
+        />
       </span>
 
       {/* Mobile Sidebar */}
@@ -22,7 +26,7 @@ export default function AppSidebar({ mobileOpen, setMobileOpen }) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="fixed inset-y-0 left-0 w-[230px] bg-[#171717] flex flex-col  md:hidden"
           >
-            <SidebarContent panelFn={setMobileOpen} />
+            <SidebarContent panelFn={setMobileOpen} mobileOpen={mobileOpen} />
           </motion.div>
         )}
       </AnimatePresence>

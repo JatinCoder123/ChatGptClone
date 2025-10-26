@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
-import { act } from "react";
-
 const messageSlice = createSlice({
   name: "messages",
   initialState: {
@@ -51,7 +49,6 @@ const messageSlice = createSlice({
 });
 
 export const sendChat = (
-  messages,
   message,
   files = [],
   images = [],
@@ -59,7 +56,7 @@ export const sendChat = (
   chatId,
   model
 ) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(messageSlice.actions.messageRequest());
 
     try {
@@ -67,15 +64,9 @@ export const sendChat = (
       formData.append("message", message);
       formData.append("model", model);
 
-      // Append files
-      files.forEach((file, idx) => {
-        formData.append(`file_${idx}`, file); // key can be anything
-      });
+      files.forEach((file, idx) => formData.append(`file_${idx}`, file));
+      images.forEach((img, idx) => formData.append(`image_${idx}`, img));
 
-      // Append images
-      images.forEach((img, idx) => {
-        formData.append(`image_${idx}`, img); // key should contain "image" so PHP detects it
-      });
       const { data } = await axios.post(
         `${BACKEND_URL}?controller=chat&action=send&user_id=${userId}${
           chatId ? `&chat_id=${chatId}` : ""
@@ -83,53 +74,39 @@ export const sendChat = (
         formData,
         {
           withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data", // ✅ correct for FormData
-          },
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log("chat response", data);
-      let aiResponse;
-      if (!data.response.success) {
-        aiResponse = {
-          id: Date.now().toString() + Math.random().toString(36).substring(2),
-          message: [
-            {
-              type: "text",
-              content: "Some Error",
-            },
-          ],
-          isUser: false,
-          model: model,
-        };
-      } else {
-        aiResponse = {
-          id: Date.now().toString() + Math.random().toString(36).substring(2),
-          message: data.response.answer,
-          isUser: false,
-          model: model,
-        };
-      }
 
-      dispatch(messageSlice.actions.messageResponse([...messages, aiResponse]));
+      console.log("chat response", data);
+
+      const aiResponse = {
+        id: Date.now().toString() + Math.random().toString(36).substring(2),
+        message: data.response?.success
+          ? data.response.answer
+          : [{ type: "text", content: "Some Error" }],
+        isUser: false,
+        model,
+      };
+
+      // ✅ Use latest state again
+      const updatedMessages = [...getState().messages.messages, aiResponse];
+      dispatch(messageSlice.actions.messageResponse(updatedMessages));
       dispatch(messageSlice.actions.setMessage(data.chat_id));
     } catch (error) {
       console.log("error", error);
       const aiResponse = {
         id: Date.now().toString(),
-        message: [
-          {
-            type: "text",
-            content: "some error",
-          },
-        ],
+        message: [{ type: "text", content: "Some error occurred" }],
         isUser: false,
-        model: model,
+        model,
       };
-      dispatch(messageSlice.actions.messageResponse([...messages, aiResponse]));
+      const updatedMessages = [...getState().messages.messages, aiResponse];
+      dispatch(messageSlice.actions.messageResponse(updatedMessages));
     }
   };
 };
+
 export const getMessages = (chatId) => {
   return async (dispatch) => {
     dispatch(messageSlice.actions.getMessagesRequest());

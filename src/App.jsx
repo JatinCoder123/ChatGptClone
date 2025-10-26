@@ -18,8 +18,10 @@ import ExploreVideos from "./Features/MediaGen/ExploreVideos.jsx";
 import MyMedia from "./Features/MediaGen/MyMedia.jsx";
 import FavMedia from "./Features/MediaGen/FavMedia.jsx";
 import AvatarLayout from "./layouts/AvatarLayout.jsx";
+import CreateAvatar from "./Features/avatar/CreateAvatar.jsx";
 
 const router = createBrowserRouter([
+  // Root and Chat Routes
   {
     path: `${BASE_PATH}`,
     element: <RootLayout />,
@@ -34,6 +36,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  // Media Routes
   {
     path: `${BASE_PATH}/gen`,
     element: <MediaLayout />,
@@ -68,13 +71,36 @@ const router = createBrowserRouter([
       },
     ],
   },
+  // TTS Routes
   {
-    path: `${BASE_PATH}/avatar`,
+    path: `${BASE_PATH}/tts`,
     element: <AvatarLayout />,
     children: [
       {
         index: true,
-        element: <CreatePage />,
+        element: <CreateAvatar />,
+      },
+    ],
+  },
+  // Pronunciation Routes
+  {
+    path: `${BASE_PATH}/pronunciation`,
+    element: <AvatarLayout />,
+    children: [
+      {
+        index: true,
+        element: <NewChat />,
+      },
+    ],
+  },
+  // Translator Routes
+  {
+    path: `${BASE_PATH}/translator`,
+    element: <AvatarLayout />,
+    children: [
+      {
+        index: true,
+        element: <NewChat />,
       },
     ],
   },

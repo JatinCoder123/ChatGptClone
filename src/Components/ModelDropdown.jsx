@@ -16,10 +16,7 @@ export default function ModelDropdown() {
   const modelsList = [
     { name: "GPT-4", icon: models.chatGpt },
     { name: "Grok", icon: models.grok },
-    // { name: "Google", icon: models.google },
-    // { name: "Claude", icon: models.claude },
     { name: "Deepseek", icon: models.deepseek },
-    // { name: "Perplexity", icon: models.perplexity },
   ];
 
   // Filter models based on search

@@ -9,6 +9,7 @@ import { BASE_PATH } from "../store/constants.js";
 import GenOption from "./GenOption.jsx";
 import { toast } from "react-toastify";
 import { createMedia, createVideoJobId } from "../store/slices/mediaSlice.js";
+import AvatarOption from "./AvatarOption.jsx";
 
 export default function InputArea({ chatId, ...props }) {
   const [data, setData] = useState({
@@ -20,6 +21,12 @@ export default function InputArea({ chatId, ...props }) {
     duration: "5s",
     count: "1v",
     model: "GPT",
+  });
+  const [avatarData, setAvatarData] = useState({
+    language: "en",
+    speed: "1x",
+    voice: "female1",
+    bg: "white",
   });
   const [inputText, setInputText] = useState("");
   const [isHovering, setIsHovering] = useState(false);
@@ -67,13 +74,10 @@ export default function InputArea({ chatId, ...props }) {
       isUser: true,
     };
     dispatch(messagesAction.addMessage([...messages, newMessage]));
-    console.log("Total Messages", messages);
     setInputText("");
     setImagePreviews([]);
     setFilePreviews([]);
-    dispatch(
-      sendChat(messages, inputText, files, images, user.id, chatId, model)
-    );
+    dispatch(sendChat(inputText, files, images, user.id, chatId, model));
     setFiles(() => []);
     setImages(() => []);
   };
@@ -255,29 +259,33 @@ export default function InputArea({ chatId, ...props }) {
 
           <div className="flex flex-wrap  items-center justify-center gap-2 w-full">
             {/* ➕ File Upload */}
-            <div className="relative flex items-center">
-              <motion.button
-                type="button"
-                whileHover={{ scale: isAuthenticated ? 1.1 : 1 }}
-                onClick={() => isAuthenticated && fileInputRef.current.click()}
-                onMouseEnter={() => !isAuthenticated && setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                className={`flex cursor-pointer items-center justify-center text-[var(--text-primary)] ${
-                  isAuthenticated
-                    ? "hover:text-cyan-500"
-                    : "opacity-50 cursor-not-allowed"
-                }`}
-              >
-                <FiPlus size={22} />
-              </motion.button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-                multiple
-              />
-            </div>
+            {!props.avatar && (
+              <div className="relative flex items-center">
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: isAuthenticated ? 1.1 : 1 }}
+                  onClick={() =>
+                    isAuthenticated && fileInputRef.current.click()
+                  }
+                  onMouseEnter={() => !isAuthenticated && setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
+                  className={`flex cursor-pointer items-center justify-center text-[var(--text-primary)] ${
+                    isAuthenticated
+                      ? "hover:text-cyan-500"
+                      : "opacity-50 cursor-not-allowed"
+                  }`}
+                >
+                  <FiPlus size={22} />
+                </motion.button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                  multiple
+                />
+              </div>
+            )}
 
             {/* 📝 Textarea */}
             <textarea
@@ -287,9 +295,9 @@ export default function InputArea({ chatId, ...props }) {
               onKeyDown={handleKeyDown}
               placeholder="Ask me anything..."
               className="flex-1 min-w-0 resize-none max-h-40 overflow-y-auto
-      px-3 py-2 rounded-md border-none outline-none
-      bg-[var(--surface)] text-[var(--text-primary)] placeholder-gray-400
-      w-full sm:w-auto"
+            px-3 py-2 rounded-md border-none outline-none
+            bg-[var(--surface)] text-[var(--text-primary)] placeholder-gray-400
+            w-full sm:w-auto"
               rows={1}
             />
 
@@ -320,12 +328,12 @@ export default function InputArea({ chatId, ...props }) {
                 loading
               }
               className={`p-2 rounded-full transition-colors
-      ${
-        inputText.trim() || imagePreviews.length || filePreviews.length
-          ? "bg-cyan-500 text-white hover:bg-cyan-600"
-          : "bg-[var(--background-secondary)] text-gray-400 cursor-not-allowed"
-      }
-    `}
+           ${
+             inputText.trim() || imagePreviews.length || filePreviews.length
+               ? "bg-cyan-500 text-white hover:bg-cyan-600"
+               : "bg-[var(--background-secondary)] text-gray-400 cursor-not-allowed"
+           }
+         `}
             >
               {inputText.trim() ? (
                 <FiSend className="w-5 h-5" />
@@ -335,6 +343,9 @@ export default function InputArea({ chatId, ...props }) {
             </motion.button>
           </div>
           {props.gen && <GenOption setData={setData} data={data} />}
+          {props.avatar && (
+            <AvatarOption setData={setAvatarData} data={avatarData} />
+          )}
         </motion.div>
       </form>
     </>

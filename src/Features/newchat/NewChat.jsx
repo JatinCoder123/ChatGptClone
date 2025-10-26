@@ -8,7 +8,6 @@ import { messagesAction } from "../../store/slices/messageSlice.js";
 import { useEffect } from "react";
 import { BASE_PATH } from "../../store/constants.js";
 import Partical from "@/Components/Particles.jsx";
-
 const NewChat = () => {
   const mode = useSelector((state) => state.theme.mode);
   const navigateTo = useNavigate();

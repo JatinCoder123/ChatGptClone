@@ -54,16 +54,15 @@ const SidebarFooter = ({ collapsed }) => {
   return (
     <div className="mt-auto border-t border-[#2d2d2d] relative">
       <div
-        className={`flex items-center py-1 ${
+        className={`flex items-center py-1 cursor-pointer ${
           collapsed ? "justify-center " : "justify-between px-4 "
         } hover:bg-[var(--surface)] transition-colors`}
+        onClick={() => setDropdownOpen((prev) => !prev)}
+        ref={dropdownRef}
       >
         {/* Profile + Info */}
         <div className="flex items-center gap-3">
-          <div
-            className="rounded-full flex items-center justify-center relative"
-            ref={dropdownRef}
-          >
+          <div className="rounded-full flex items-center justify-center relative">
             {loading ? (
               <LoadingButton />
             ) : !isAuthenticated ? (
@@ -77,10 +76,7 @@ const SidebarFooter = ({ collapsed }) => {
               </motion.button>
             ) : (
               <>
-                <div
-                  className="flex items-center rounded-lg cursor-pointer hover:bg-[var(--surface)] p-1"
-                  onClick={() => setDropdownOpen((prev) => !prev)}
-                >
+                <div className="flex items-center rounded-lg cursor-pointer hover:bg-[var(--surface)] p-1">
                   <img
                     src={user.profile_pic || `${BASE_PATH}/profile.png`}
                     alt="User"
@@ -155,22 +151,6 @@ const SidebarFooter = ({ collapsed }) => {
             )}
           </AnimatePresence>
         </div>
-
-        {/* Dropdown icon → only when expanded */}
-        <AnimatePresence>
-          {!collapsed && isAuthenticated && (
-            <motion.div
-              initial={{ opacity: 0, rotate: -90 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              exit={{ opacity: 0, rotate: -90 }}
-              transition={{ duration: 0.2 }}
-              className="cursor-pointer"
-              onClick={() => setDropdownOpen((prev) => !prev)}
-            >
-              <ChevronDown size={16} className="text-[#808080]" />
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );

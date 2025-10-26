@@ -12,32 +12,42 @@ import SidebarFooter from "../SidebarFooter";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BASE_PATH } from "../../../store/constants";
-import {
-  chatActions,
-  deleteChat,
-  getChats,
-} from "../../../store/slices/chatSlice";
+import { chatActions } from "../../../store/slices/chatSlice";
 import DeleteChatDialog from "../../../Features/chat/DeleteChatDialog";
 import RenameChat from "../../../Features/chat/RenameChat";
 import { messagesAction } from "../../../store/slices/messageSlice";
 
-export default function SidebarContent({ panelFn, collapsed }) {
+export default function SidebarContent({ panelFn, collapsed, mobileOpen }) {
   const [hoveredChat, setHoveredChat] = useState(null);
   const [menuChatId, setMenuChatId] = useState(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteChatId, setDeleteChatId] = useState(null);
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
   const [renameChatId, setRenameChatId] = useState(null);
-
   const { chats, activeChat, isDelete } = useSelector((state) => state.chats);
   const navigateTo = useNavigate();
   const dispatch = useDispatch();
+  const sidebarRef = useRef(null); // <-- Ref for click outside
   useEffect(() => {
     const handleClickOutside = () => setMenuChatId(null);
     window.addEventListener("click", handleClickOutside);
     return () => window.removeEventListener("click", handleClickOutside);
   }, []);
-
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        mobileOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target)
+      ) {
+        panelFn(false); // collapse sidebar
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [panelFn]);
   return (
     <>
       {deleteDialogOpen && (
@@ -55,6 +65,7 @@ export default function SidebarContent({ panelFn, collapsed }) {
         />
       )}
       <motion.div
+        ref={sidebarRef}
         animate={{ width: collapsed ? 72 : 230 }}
         transition={{ duration: 0.35, ease: "easeInOut" }}
         className={`flex flex-col h-full overflow-hidden border-r border-[var(--text-secondary)]/10 shadow-sm bg-[var(--sidebar-background)]`}
