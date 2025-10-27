@@ -49,28 +49,28 @@ const avatarSlice = createSlice({
     },
     createAvatarJobIdRequest(state) {
       state.loading = true;
+      state.avatar = null;
       state.error = null;
       state.currentJobId = null;
-      state.videoJobIdLoading = true;
+      state.avatarJobIdLoading = true;
       state.progress = 5;
     },
     createAvatarJobIdSuccess(state, action) {
       state.loading = true;
       state.error = null;
       state.currentJobId = action.payload;
-      state.videoJobIdLoading = false;
+      state.avatarJobIdLoading = false;
       state.progress = 15;
     },
     createAvatarJobIdFailed(state, action) {
       state.loading = false;
       state.error = action.payload;
       state.currentJobId = null;
-      state.videoJobIdLoading = false;
+      state.avatarJobIdLoading = false;
     },
     startChekingStatus(state) {
       state.loading = state.loading;
       state.error = null;
-      state.currentGenerationId = null;
       state.progress = 20;
       state.statusCheking = true;
     },
@@ -163,7 +163,7 @@ export const createAvatarJobId = (formData, userId) => {
         }
       );
       console.log("Created Job", data);
-      dispatch(avatarSlice.actions.createAvatarJobIdSuccess(data.job_id));
+      dispatch(avatarSlice.actions.createAvatarJobIdSuccess(data.jobId));
       dispatch(avatarSlice.actions.clearAllErrors());
     } catch (error) {
       console.log(error);
@@ -175,16 +175,15 @@ export const createAvatarJobId = (formData, userId) => {
     }
   };
 };
-export const checkAvatarStatus = (jobId) => {
+export const checkAvatarStatus = (jobId, user_id) => {
   return async (dispatch) => {
     dispatch(avatarSlice.actions.startChekingStatus());
     let pollCount = 0;
-
     const pollInterval = setInterval(async () => {
       pollCount++;
       try {
         const { data } = await axios.get(
-          `${BACKEND_URL}?controller=avatar&action=avatarStatus&jobId=${jobId}`,
+          `${BACKEND_URL}?controller=avatar&action=avatarStatus&jobId=${jobId}&user_id=${user_id}`,
           {
             withCredentials: true,
           }
@@ -192,14 +191,16 @@ export const checkAvatarStatus = (jobId) => {
         console.log(`status of video  ${data.status}`);
         if (data.success) {
           let progress = 20 + pollCount * 3;
-          if (data.status === "running") {
+          if (data.status === "Running") {
             progress = Math.max(progress, 40);
             dispatch(avatarSlice.actions.updateStatus(data.status));
             dispatch(avatarSlice.actions.updateProgress(progress));
           }
-          if (data.status === "succeeded") {
+          if (data.status === "Succeeded") {
             clearInterval(pollInterval);
-            dispatch(avatarSlice.actions.avatarIsReady(data.avatarInfo));
+            console.log("Avatar is Ready");
+            console.log(data.avatarUrl);
+            dispatch(avatarSlice.actions.avatarIsReady(data.avatarUrl));
           } else if (data.status === "failed" || data.error) {
             clearInterval(pollInterval);
             console.log("Failed To Generate avatar");

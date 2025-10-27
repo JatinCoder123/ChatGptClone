@@ -6,6 +6,7 @@ import userReducer from "./slices/userSlice.js";
 import mediaReducer from "./slices/mediaSlice.js";
 import messageReducer from "./slices/messageSlice.js";
 import chatsReducer from "./slices/chatSlice.js";
+import avatarReducer from "./slices/AvatarSlice.js";
 
 export const store = configureStore({
   reducer: {
@@ -15,5 +16,6 @@ export const store = configureStore({
     messages: messageReducer,
     chats: chatsReducer,
     media: mediaReducer,
+    avatar: avatarReducer,
   },
 });

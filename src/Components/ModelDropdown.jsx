@@ -15,6 +15,7 @@ export default function ModelDropdown() {
 
   const modelsList = [
     { name: "GPT-4", icon: models.chatGpt },
+    { name: "GPT-5", icon: models.chatGpt5 },
     { name: "Grok", icon: models.grok },
     { name: "Deepseek", icon: models.deepseek },
   ];

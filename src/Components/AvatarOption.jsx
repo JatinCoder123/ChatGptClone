@@ -7,12 +7,15 @@ import {
   MicVocal,
   Gauge,
   Wallpaper,
+  Presentation,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import AvatarDialog from "../Features/avatar/AvatarDialog";
+import { languagesToVoices } from "@/assets/assets.js";
 
-const AvatarOption = ({ data, setData }) => {
+const AvatarOption = ({ data, setData, handleFile }) => {
   const [activeMenu, setActiveMenu] = useState(null);
-
+  const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
   const handleClick = (menu) => {
@@ -31,7 +34,16 @@ const AvatarOption = ({ data, setData }) => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
-
+  useEffect(() => {
+    const langIndex = languagesToVoices.findIndex(
+      (lang) => lang.language === data.language
+    );
+    handleData("langIndex", langIndex !== -1 ? langIndex : 0);
+    handleData(
+      "voice",
+      languagesToVoices[langIndex !== -1 ? langIndex : 0].voices[0].name
+    );
+  }, [data.language]);
   const menuVariant = {
     hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0 },
@@ -61,11 +73,28 @@ const AvatarOption = ({ data, setData }) => {
   };
 
   return (
-    <div
-      ref={menuRef}
-      className="relative w-full flex justify-center mt-3 select-none"
-    >
-      <div className="flex flex-wrap items-center gap-2 bg-transparent relative text-[var(--text-primary)]">
+    <div ref={menuRef} className=" w-full flex justify-center mt-3 select-none">
+      <div className="flex flex-wrap items-center gap-2 bg-transparent  text-[var(--text-primary)]">
+        {/* Avatar */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setOpen("true")}
+            className="flex items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 text-sm font-medium backdrop-blur-md hover:bg-white/20 transition-all duration-300"
+          >
+            <Presentation size={16} />
+            <span>{data.avatar}</span>
+          </button>
+          {open && (
+            <AvatarDialog
+              open={open}
+              setOpen={setOpen}
+              handleData={handleData}
+              data={data}
+              handleFile={handleFile}
+            />
+          )}
+        </div>
         {/* Languages */}
         <div className="relative">
           <button
@@ -85,14 +114,14 @@ const AvatarOption = ({ data, setData }) => {
                 variants={menuVariant}
                 className="absolute bottom-10 left-0 bg-black/80 rounded-lg p-2 min-w-[120px] shadow-lg"
               >
-                {["1v", "2v", "3v", "4v", "5v"].map((c) => (
+                {languagesToVoices.map((lang) => (
                   <MenuItem
-                    key={c}
+                    key={lang.locale}
                     icon={Languages}
-                    label={c}
-                    selected={data.language === c}
+                    label={lang.language}
+                    selected={data.language === lang.language}
                     onClick={() => {
-                      handleData("language", c);
+                      handleData("language", lang.language);
                       closeMenu();
                     }}
                   />
@@ -111,6 +140,7 @@ const AvatarOption = ({ data, setData }) => {
             <MicVocal size={16} />
             <span>{data.voice}</span>
           </button>
+
           <AnimatePresence>
             {activeMenu === "voice" && (
               <motion.div
@@ -118,16 +148,16 @@ const AvatarOption = ({ data, setData }) => {
                 animate="visible"
                 exit="hidden"
                 variants={menuVariant}
-                className="absolute bottom-10 left-0 bg-black/80 rounded-lg p-2 min-w-[120px] shadow-lg"
+                className="absolute bottom-10 left-0 bg-black/80 rounded-lg p-2 min-w-[160px] shadow-lg overflow-y-auto max-h-60 custom-scrollbar"
               >
-                {["1v", "2v", "3v", "4v", "5v"].map((c) => (
+                {languagesToVoices[`${data.langIndex}`].voices.map((voice) => (
                   <MenuItem
-                    key={c}
-                    icon={ListOrdered}
-                    label={c}
-                    selected={data.voice === c}
+                    key={voice.name}
+                    icon={MicVocal}
+                    label={voice.name}
+                    selected={data.voice === voice.name}
                     onClick={() => {
-                      handleData("voice", c);
+                      handleData("voice", voice.name);
                       closeMenu();
                     }}
                   />

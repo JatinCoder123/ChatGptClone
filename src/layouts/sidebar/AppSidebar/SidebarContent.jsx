@@ -5,12 +5,14 @@ import {
   PanelRightOpen,
   Pencil,
   Trash2,
+  Image,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/assets";
 import SidebarFooter from "../SidebarFooter";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { TbPhotoVideo } from "react-icons/tb";
 import { BASE_PATH } from "../../../store/constants";
 import { chatActions } from "../../../store/slices/chatSlice";
 import DeleteChatDialog from "../../../Features/chat/DeleteChatDialog";
@@ -75,6 +77,7 @@ export default function SidebarContent({ panelFn, collapsed, mobileOpen }) {
           {/* Logo + Text */}
           {!collapsed && (
             <motion.div
+              onClick={() => navigateTo(`${BASE_PATH}/`)}
               className="flex items-center gap-2 cursor-pointer overflow-hidden"
               animate={{ width: collapsed ? "40px" : "200px" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -111,14 +114,14 @@ export default function SidebarContent({ panelFn, collapsed, mobileOpen }) {
         </div>
 
         {/* New Chat Button */}
-        <div className="px-3 pb-3 mt-4">
+        <div className="flex flex-col  px-3  mt-4">
           <button
             onClick={() => {
               dispatch(messagesAction.addMessage([]));
               dispatch(chatActions.setActiveChat(null));
               navigateTo(`${BASE_PATH}/`);
             }}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg  hover:bg-[var(--surface)] transition-colors text-[var(--text-primary)] cursor-pointer"
+            className="w-full flex items-center gap-3 p-2 rounded-lg  hover:bg-[var(--surface)] transition-colors text-[var(--text-primary)] cursor-pointer"
           >
             <Plus size={18} strokeWidth={1.5} />
             <AnimatePresence>
@@ -131,6 +134,27 @@ export default function SidebarContent({ panelFn, collapsed, mobileOpen }) {
                   className="text-[15px]"
                 >
                   New Chat
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+          <button
+            onClick={() => {
+              navigateTo(`${BASE_PATH}/gen/my-media`);
+            }}
+            className="w-full flex items-center gap-3 p-2 rounded-lg  hover:bg-[var(--surface)] transition-colors text-[var(--text-primary)] cursor-pointer"
+          >
+            <TbPhotoVideo size={18} strokeWidth={1.5} />
+            <AnimatePresence>
+              {!collapsed && (
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.25 }}
+                  className="text-[15px]"
+                >
+                  Gallary
                 </motion.span>
               )}
             </AnimatePresence>
